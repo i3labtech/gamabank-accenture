@@ -1,6 +1,5 @@
-
 const service = require('../services/user.service')
-const User = require ('../models/User')
+const { User } = require ('../models/user.model')
 
 
 const newAccount = async (request, h) => {

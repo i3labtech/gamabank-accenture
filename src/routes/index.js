@@ -1,6 +1,8 @@
+
 const { status } = require('../api/controllers/app.controller')
 const authcontroller = require('../api/controllers/auth.controller')
 const usercontroller = require('../api/controllers/user.controller')
+const appcontroller = require('../api/controllers/app.controller')
 
 const { LoginRequestDTO, LoginResponseDTO } = require('../api/models/dto/auth.dto')
 
@@ -41,7 +43,16 @@ const login = {
 const validate = {
     method: 'GET',
     path: '/login/verify',
-    handler: authcontroller.validate
+    handler: authcontroller.validate,
+    options: {
+        tags: ["api", "login"],
+        description: 'Rota para verificaçào do token',
+        notes: 'blablabla blablabla',
+        validate: {
+            headers: Joi.object({'x-access-token': Joi.string().required()}).unknown()
+        },
+
+    }
 }
 
 const newaccount = {
@@ -50,5 +61,17 @@ const newaccount = {
     handler: usercontroller.newAccount
 }
 
+const sendMail = {
+    method: 'GET',
+    path: '/mail',
+    handler: appcontroller.sendMail
+}
 
-module.exports = [ root, login, validate, newaccount ]
+const getInfos = {
+     method: 'GET',
+     path: '/infos',
+     handler: appcontroller.infosSystem
+}
+
+
+module.exports = [ root, login, validate, newaccount, sendMail, getInfos ]

@@ -1,9 +1,8 @@
-
 const Joi = require('joi')
 
 const LoginRequestDTO = Joi.object({
     username: Joi.string().required(),
-    password: Joi.string().required()
+    password: Joi.string().required(),
 }).label('LoginRequestDTO')
 
 

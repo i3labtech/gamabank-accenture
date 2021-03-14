@@ -1,30 +1,26 @@
-const Hapi = require('@hapi/hapi')
-require('./configs/env')
+const Hapi = require("@hapi/hapi");
+require("./configs/env");
 
-const { swagger, inert, vision } = require('./configs/swagger')
-const sequelize = require('./configs/sequelize')
+const swagger = require('./configs/swagger')
 
-const routes = require('./routes')
-
-const plugins = [swagger, inert, vision, sequelize]
+const routes = require("./routes");
 
 const server = async () => {
-    const hapiServer = Hapi.server({
-        port: process.env.PORT || 3000,
-        host: process.env.HOST || 'localhost'
-    })
+  const hapiServer = Hapi.server({
+    port: process.env.PORT || 3000,
+    host: process.env.HOST || "localhost",
+  });
 
-    await hapiServer.register(plugins)
+  await hapiServer.register(swagger);
+  hapiServer.route(routes);
 
-    hapiServer.route(routes)
+  return hapiServer;
+};
 
-    return hapiServer
-}
+process.on("unhandledRejection", (err) => {
+  console.log("---->  Deu ruim !");
+  console.error(err);
+  process.exit(1);
+});
 
-process.on('unhandledRejection', err => {
-    console.log('---->  Error.')
-    console.error(err)
-    process.exit(1)
-})
-
-module.exports = server()
+module.exports = server();
